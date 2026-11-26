@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trigonometría — Cálculo de Alturas por Ángulo de Elevación</title>
+  <style>
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --primary: #1b365d;
+  --accent: #2563eb;
+  --accent-light: #eff6ff;
+  --success: #0f766e;
+  --success-bg: #f0fdfa;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --radius: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+  padding: 24px 16px 48px;
+}
+.container { max-width: 1080px; margin: 0 auto; }
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent-light); color: var(--accent);
+  font-size: 0.82rem; font-weight: 600; padding: 5px 12px;
+  border-radius: 999px; margin-bottom: 10px;
+}
+header { margin-bottom: 24px; }
+header h1 { font-size: 1.9rem; color: var(--primary); margin-bottom: 6px; }
+header p { color: var(--muted); font-size: 0.98rem; max-width: 780px; }
+.grid {
+  display: grid; grid-template-columns: 360px 1fr; gap: 22px; align-items: start;
+}
+@media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+.card h2 {
+  font-size: 1.08rem; color: var(--primary); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid var(--border); padding-bottom: 10px;
+}
+.pill-icon {
+  background: var(--accent-light); color: var(--accent);
+  font-weight: 700; font-size: 0.8rem; padding: 3px 8px; border-radius: 8px;
+}
+.field { margin-bottom: 13px; }
+.field label {
+  display: block; font-size: 0.85rem; font-weight: 600;
+  color: #334155; margin-bottom: 5px;
+}
+.field input, .field select {
+  width: 100%; padding: 9px 12px; border: 1.5px solid var(--border);
+  border-radius: 9px; font-size: 0.95rem; transition: border-color 0.2s;
+}
+.field input:focus, .field select:focus { outline: none; border-color: var(--accent); }
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.btn-row { display: flex; gap: 8px; margin-top: 14px; }
+.btn {
+  flex: 1; background: var(--accent); color: #fff; border: none;
+  padding: 10px 14px; border-radius: 9px; font-weight: 600;
+  font-size: 0.92rem; cursor: pointer; transition: background 0.2s;
+}
+.btn:hover { background: #1d4ed8; }
+.btn-sec {
+  background: #f1f5f9; color: #334155; flex: 0 0 auto;
+  padding: 10px 14px; border: 1px solid var(--border);
+  border-radius: 9px; font-weight: 600; cursor: pointer;
+}
+.btn-sec:hover { background: #e2e8f0; }
+.examples { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--border); }
+.examples-title { font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+.chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  background: #f8fafc; border: 1px solid var(--border); color: var(--primary);
+  padding: 5px 10px; border-radius: 999px; font-size: 0.8rem;
+  font-weight: 600; cursor: pointer; transition: all 0.15s;
+}
+.chip:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+.result-box {
+  background: var(--success-bg); border: 1px solid #99f6e4;
+  border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+}
+.result-label { font-size: 0.78rem; font-weight: 700; color: var(--success); text-transform: uppercase; letter-spacing: 0.04em; }
+.result-value { font-size: 1.32rem; font-weight: 800; color: #115e59; margin-top: 3px; font-family: 'Cambria Math', 'Segoe UI', serif; }
+.result-sub { font-size: 0.9rem; color: #134e4a; margin-top: 4px; }
+.svg-wrap {
+  background: #f8fafc; border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px; margin-bottom: 16px;
+  display: flex; justify-content: center; align-items: center;
+}
+.steps { background: #ffffff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.steps h3 { font-size: 0.92rem; color: var(--primary); margin-bottom: 10px; }
+.step-item {
+  font-size: 0.9rem; padding: 7px 10px; border-left: 3px solid var(--accent);
+  background: #f8fafc; border-radius: 0 6px 6px 0; margin-bottom: 8px;
+}
+.step-item strong { color: var(--primary); }
+.tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+.tab {
+  flex: 1; text-align: center; padding: 8px; border-radius: 8px;
+  background: #f1f5f9; color: #475569; font-size: 0.84rem;
+  font-weight: 600; cursor: pointer; border: 1px solid transparent;
+}
+.tab.active { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+.note { font-size: 0.8rem; color: var(--muted); margin-top: 10px; }
+footer { text-align: center; margin-top: 28px; font-size: 0.82rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="badge">∠ Trigonometría Interactiva · Razones Trigonométricas</div>
+    <h1>Aplicación de la Trigonometría: Altura de un Edificio</h1>
+    <p>Calcula alturas inaccesibles usando la razón <strong>tan(θ) = cateto opuesto / cateto adyacente</strong> a partir de la distancia horizontal y el ángulo de elevación.</p>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <h2><span class="pill-icon">θ,d</span> Datos de medición</h2>
+      <div class="field"><label>Distancia horizontal al edificio — Cateto adyacente (m)</label><input type="number" id="dist" value="20" min="1" step="1"></div>
+      <div class="field">
+        <label>Ángulo de elevación θ (grados: 5° a 80°)</label>
+        <input type="number" id="ang" value="45" min="5" max="80" step="1">
+      </div>
+      <div class="btn-row">
+        <button class="btn" onclick="calcular()">Calcular altura</button>
+        <button class="btn-sec" onclick="cargar(20,45)">↻</button>
+      </div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos rápidos</div>
+        <div class="chip-group">
+          <button class="chip" onclick="cargar(20,45)">Informe: 20 m, 45°</button>
+          <button class="chip" onclick="cargar(30,37)">Triángulo 37° (30 m)</button>
+          <button class="chip" onclick="cargar(15,60)">Ángulo notable 60° (15 m)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="pill-icon">✓</span> Visualización y razones trigonométricas</h2>
+      <div class="result-box" id="resBox"></div>
+      <div class="svg-wrap" id="svgWrap"></div>
+      <div class="steps" id="stepsBox"></div>
+    </div>
+  </div>
+  <footer>Nivelación en Matemáticas · USIL · Página interactiva de apoyo al informe</footer>
+</div>
+<script>
+function cargar(d, a){ document.getElementById('dist').value=d; document.getElementById('ang').value=a; calcular(); }
+function calcular(){
+  const d = parseFloat(document.getElementById('dist').value);
+  const ang = parseFloat(document.getElementById('ang').value);
+  if (isNaN(d)||isNaN(ang)||d<=0||ang<=0||ang>=90) return;
+  const rad = ang * Math.PI / 180;
+  const tanV = Math.tan(rad);
+  const sinV = Math.sin(rad);
+  const cosV = Math.cos(rad);
+  const h = d * tanV;
+  const hip = Math.sqrt(d*d + h*h);
+
+  document.getElementById('resBox').innerHTML = `
+    <div class="result-label">Altura calculada del edificio (h)</div>
+    <div class="result-value">h = ${h.toFixed(2)} metros</div>
+    <div class="result-sub">Hipotenusa (línea visual): <strong>${hip.toFixed(2)} m</strong> · sen(${ang}°) = ${sinV.toFixed(3)} · cos(${ang}°) = ${cosV.toFixed(3)} · tan(${ang}°) = ${tanV.toFixed(3)}</div>`;
+
+  const basePx = 220;
+  const hPx = Math.min(170, Math.max(35, basePx * tanV * 0.72));
+  const xObs = 70, yGround = 205, xBld = xObs + basePx, yTop = yGround - hPx;
+
+  document.getElementById('svgWrap').innerHTML = `
+  <svg width="440" height="235" viewBox="0 0 440 235" style="max-width:100%;">
+    <line x1="25" y1="${yGround}" x2="415" y2="${yGround}" stroke="#94a3b8" stroke-width="2"/>
+    <rect x="${xBld}" y="${yTop}" width="64" height="${hPx}" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
+    <polygon points="${xObs},${yGround} ${xBld},${yGround} ${xBld},${yTop}" fill="rgba(37,99,235,0.12)" stroke="#2563eb" stroke-width="2"/>
+    <rect x="${xBld-12}" y="${yGround-12}" width="12" height="12" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+    <circle cx="${xObs}" cy="${yGround-12}" r="6" fill="#0f766e"/>
+    <line x1="${xObs}" y1="${yGround-6}" x2="${xObs}" y2="${yGround}" stroke="#0f766e" stroke-width="2.5"/>
+    <text x="${(xObs+xBld)/2}" y="${yGround+18}" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">Distancia = ${d} m</text>
+    <text x="${xBld+72}" y="${(yTop+yGround)/2}" font-size="12" font-weight="700" fill="#1d4ed8">h = ${h.toFixed(2)} m</text>
+    <text x="${xObs+34}" y="${yGround-8}" font-size="12" font-weight="700" fill="#b45309">θ = ${ang}°</text>
+  </svg>`;
+
+  document.getElementById('stepsBox').innerHTML = `
+    <h3>Resolución paso a paso</h3>
+    <div class="step-item"><strong>Paso 1 (Datos):</strong> Cateto adyacente = ${d} m, ángulo θ = ${ang}°, cateto opuesto = h</div>
+    <div class="step-item"><strong>Paso 2 (Razón trigonométrica):</strong> tan(${ang}°) = h / ${d}</div>
+    <div class="step-item"><strong>Paso 3 (Sustitución):</strong> ${tanV.toFixed(4)} = h / ${d}</div>
+    <div class="step-item"><strong>Paso 4 (Despeje):</strong> h = ${d} × ${tanV.toFixed(4)} = <strong>${h.toFixed(2)} m</strong></div>`;
+}
+calcular();
+</script>
+</body>
+</html>

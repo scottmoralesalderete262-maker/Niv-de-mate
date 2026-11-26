@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Semejanza de Triángulos — Criterio AA Interactivo</title>
+  <style>
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --primary: #1b365d;
+  --accent: #2563eb;
+  --accent-light: #eff6ff;
+  --success: #0f766e;
+  --success-bg: #f0fdfa;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --radius: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+  padding: 24px 16px 48px;
+}
+.container { max-width: 1080px; margin: 0 auto; }
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent-light); color: var(--accent);
+  font-size: 0.82rem; font-weight: 600; padding: 5px 12px;
+  border-radius: 999px; margin-bottom: 10px;
+}
+header { margin-bottom: 24px; }
+header h1 { font-size: 1.9rem; color: var(--primary); margin-bottom: 6px; }
+header p { color: var(--muted); font-size: 0.98rem; max-width: 780px; }
+.grid {
+  display: grid; grid-template-columns: 360px 1fr; gap: 22px; align-items: start;
+}
+@media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+.card h2 {
+  font-size: 1.08rem; color: var(--primary); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid var(--border); padding-bottom: 10px;
+}
+.pill-icon {
+  background: var(--accent-light); color: var(--accent);
+  font-weight: 700; font-size: 0.8rem; padding: 3px 8px; border-radius: 8px;
+}
+.field { margin-bottom: 13px; }
+.field label {
+  display: block; font-size: 0.85rem; font-weight: 600;
+  color: #334155; margin-bottom: 5px;
+}
+.field input, .field select {
+  width: 100%; padding: 9px 12px; border: 1.5px solid var(--border);
+  border-radius: 9px; font-size: 0.95rem; transition: border-color 0.2s;
+}
+.field input:focus, .field select:focus { outline: none; border-color: var(--accent); }
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.btn-row { display: flex; gap: 8px; margin-top: 14px; }
+.btn {
+  flex: 1; background: var(--accent); color: #fff; border: none;
+  padding: 10px 14px; border-radius: 9px; font-weight: 600;
+  font-size: 0.92rem; cursor: pointer; transition: background 0.2s;
+}
+.btn:hover { background: #1d4ed8; }
+.btn-sec {
+  background: #f1f5f9; color: #334155; flex: 0 0 auto;
+  padding: 10px 14px; border: 1px solid var(--border);
+  border-radius: 9px; font-weight: 600; cursor: pointer;
+}
+.btn-sec:hover { background: #e2e8f0; }
+.examples { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--border); }
+.examples-title { font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+.chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  background: #f8fafc; border: 1px solid var(--border); color: var(--primary);
+  padding: 5px 10px; border-radius: 999px; font-size: 0.8rem;
+  font-weight: 600; cursor: pointer; transition: all 0.15s;
+}
+.chip:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+.result-box {
+  background: var(--success-bg); border: 1px solid #99f6e4;
+  border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+}
+.result-label { font-size: 0.78rem; font-weight: 700; color: var(--success); text-transform: uppercase; letter-spacing: 0.04em; }
+.result-value { font-size: 1.32rem; font-weight: 800; color: #115e59; margin-top: 3px; font-family: 'Cambria Math', 'Segoe UI', serif; }
+.result-sub { font-size: 0.9rem; color: #134e4a; margin-top: 4px; }
+.svg-wrap {
+  background: #f8fafc; border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px; margin-bottom: 16px;
+  display: flex; justify-content: center; align-items: center;
+}
+.steps { background: #ffffff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.steps h3 { font-size: 0.92rem; color: var(--primary); margin-bottom: 10px; }
+.step-item {
+  font-size: 0.9rem; padding: 7px 10px; border-left: 3px solid var(--accent);
+  background: #f8fafc; border-radius: 0 6px 6px 0; margin-bottom: 8px;
+}
+.step-item strong { color: var(--primary); }
+.tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+.tab {
+  flex: 1; text-align: center; padding: 8px; border-radius: 8px;
+  background: #f1f5f9; color: #475569; font-size: 0.84rem;
+  font-weight: 600; cursor: pointer; border: 1px solid transparent;
+}
+.tab.active { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+.note { font-size: 0.8rem; color: var(--muted); margin-top: 10px; }
+footer { text-align: center; margin-top: 28px; font-size: 0.82rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="badge">△ Geometría Interactiva · Semejanza de Triángulos (AA)</div>
+    <h1>Semejanza de Triángulos y Proporcionalidad</h1>
+    <p>Explora los dos casos del informe mediante el criterio <strong>Ángulo-Ángulo (AA)</strong>: el triángulo con segmento interno (ejercicio teórico) y la estructura de puente peatonal con lados paralelos.</p>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <h2><span class="pill-icon">AA</span> Configuración del problema</h2>
+      <div class="tabs">
+        <div class="tab active" id="t1" onclick="setCaso(1)">Ejercicio Teórico (△ABP ~ △ACB)</div>
+        <div class="tab" id="t2" onclick="setCaso(2)">Puente Peatonal (DC ∥ AB)</div>
+      </div>
+
+      <div id="c1">
+        <div class="field"><label>Segmento BP (metros)</label><input type="number" id="bp" value="4" min="0.5" step="0.5"></div>
+        <div class="field"><label>Segmento PC (metros)</label><input type="number" id="pc" value="5" min="0.5" step="0.5"></div>
+      </div>
+
+      <div id="c2" style="display:none;">
+        <div class="field"><label>Segmento DE (metros)</label><input type="number" id="de" value="6" min="0.5" step="0.5"></div>
+        <div class="field"><label>Segmento EB (metros)</label><input type="number" id="eb" value="10" min="0.5" step="0.5"></div>
+        <div class="field"><label>Base AB (metros)</label><input type="number" id="ab" value="18" min="0.5" step="0.5"></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn" onclick="calcular()">Resolver proporción</button>
+        <button class="btn-sec" onclick="resetear()">↻</button>
+      </div>
+
+      <div class="examples">
+        <div class="examples-title">Ejemplos rápidos</div>
+        <div class="chip-group">
+          <button class="chip" onclick="cargarC1(4,5)">Libro: BP=4, PC=5</button>
+          <button class="chip" onclick="cargarC1(9,7)">Variante: BP=9, PC=7</button>
+          <button class="chip" onclick="cargarC2(6,10,18)">Puente: DE=6, EB=10, AB=18</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="pill-icon">✓</span> Diagrama y desarrollo algebraico</h2>
+      <div class="result-box" id="resBox"></div>
+      <div class="svg-wrap" id="svgWrap"></div>
+      <div class="steps" id="stepsBox"></div>
+    </div>
+  </div>
+  <footer>Nivelación en Matemáticas · USIL · Página interactiva de apoyo al informe</footer>
+</div>
+<script>
+let caso = 1;
+function setCaso(n){
+  caso = n;
+  document.getElementById('t1').classList.toggle('active', n===1);
+  document.getElementById('t2').classList.toggle('active', n===2);
+  document.getElementById('c1').style.display = n===1 ? 'block' : 'none';
+  document.getElementById('c2').style.display = n===2 ? 'block' : 'none';
+  calcular();
+}
+function cargarC1(bp, pc){ setCaso(1); document.getElementById('bp').value=bp; document.getElementById('pc').value=pc; calcular(); }
+function cargarC2(de, eb, ab){ setCaso(2); document.getElementById('de').value=de; document.getElementById('eb').value=eb; document.getElementById('ab').value=ab; calcular(); }
+function resetear(){ caso===1 ? cargarC1(4,5) : cargarC2(6,10,18); }
+
+function calcular(){
+  const resBox = document.getElementById('resBox');
+  const svgWrap = document.getElementById('svgWrap');
+  const stepsBox = document.getElementById('stepsBox');
+
+  if (caso === 1) {
+    const bp = parseFloat(document.getElementById('bp').value);
+    const pc = parseFloat(document.getElementById('pc').value);
+    if (bp<=0 || pc<=0) return;
+    const bc = bp + pc;
+    const x2 = bp * bc;
+    const x = Math.sqrt(x2);
+    const xTxt = Number.isInteger(x) ? x : x.toFixed(2);
+
+    resBox.innerHTML = `
+      <div class="result-label">Longitud del lado AB (x)</div>
+      <div class="result-value">AB = x = ${xTxt} m</div>
+      <div class="result-sub">Base total BC = ${bc} m · Semejanza △ABP ~ △ACB por criterio AA</div>`;
+
+    const px = 60 + (bp/bc)*320;
+    svgWrap.innerHTML = `
+    <svg width="440" height="220" viewBox="0 0 440 220" style="max-width:100%;">
+      <polygon points="60,180 380,180 190,40" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2.5"/>
+      <line x1="190" y1="40" x2="${px}" y2="180" stroke="#dc2626" stroke-width="2"/>
+      <circle cx="60" cy="180" r="4" fill="#1e293b"/><text x="45" y="196" font-weight="700" font-size="13">B</text>
+      <circle cx="380" cy="180" r="4" fill="#1e293b"/><text x="385" y="196" font-weight="700" font-size="13">C</text>
+      <circle cx="190" cy="40" r="4" fill="#1e293b"/><text x="186" y="28" font-weight="700" font-size="13">A</text>
+      <circle cx="${px}" cy="180" r="4" fill="#dc2626"/><text x="${px-4}" y="200" font-weight="700" font-size="13" fill="#dc2626">P</text>
+      <text x="108" y="102" font-weight="700" font-size="14" fill="#1d4ed8">x = ${xTxt} m</text>
+      <text x="${(60+px)/2}" y="172" text-anchor="middle" font-size="12" font-weight="700">${bp} m</text>
+      <text x="${(px+380)/2}" y="172" text-anchor="middle" font-size="12" font-weight="700">${pc} m</text>
+      <text x="342" y="172" font-size="12" fill="#0f766e" font-weight="700">α</text>
+      <text x="176" y="75" font-size="12" fill="#0f766e" font-weight="700">α</text>
+    </svg>`;
+
+    stepsBox.innerHTML = `
+      <h3>Resolución paso a paso</h3>
+      <div class="step-item"><strong>Paso 1 (Calcular BC):</strong> BC = BP + PC = ${bp} + ${pc} = <strong>${bc} m</strong></div>
+      <div class="step-item"><strong>Paso 2 (Plantear proporción por criterio AA):</strong> AB / BC = BP / AB → x / ${bc} = ${bp} / x</div>
+      <div class="step-item"><strong>Paso 3 (Multiplicar en cruz):</strong> x² = ${bc} × ${bp} = <strong>${x2}</strong></div>
+      <div class="step-item"><strong>Paso 4 (Raíz positiva):</strong> x = √${x2} = <strong>${xTxt} m</strong></div>`;
+  } else {
+    const de = parseFloat(document.getElementById('de').value);
+    const eb = parseFloat(document.getElementById('eb').value);
+    const ab = parseFloat(document.getElementById('ab').value);
+    if (de<=0 || eb<=0 || ab<=0) return;
+    const x = (de * ab) / eb;
+    const xTxt = Number.isInteger(x) ? x : x.toFixed(2);
+
+    resBox.innerHTML = `
+      <div class="result-label">Longitud superior del puente DC (x)</div>
+      <div class="result-value">DC = x = ${xTxt} m</div>
+      <div class="result-sub">Razón de semejanza k = DE / EB = ${(de/eb).toFixed(2)} · △DEC ~ △BEA</div>`;
+
+    svgWrap.innerHTML = `
+    <svg width="420" height="230" viewBox="0 0 420 230" style="max-width:100%;">
+      <polygon points="145,35 275,35 210,105" fill="#fef3c7" stroke="#d97706" stroke-width="2.2"/>
+      <polygon points="85,195 335,195 210,105" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2.2"/>
+      <text x="130" y="38" font-weight="700" font-size="13">D</text>
+      <text x="282" y="38" font-weight="700" font-size="13">C</text>
+      <text x="220" y="108" font-weight="700" font-size="13" fill="#b91c1c">E</text>
+      <text x="68" y="200" font-weight="700" font-size="13">A</text>
+      <text x="342" y="200" font-weight="700" font-size="13">B</text>
+      <text x="210" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#b45309">DC = ${xTxt} m</text>
+      <text x="155" y="80" font-weight="700" font-size="12">${de} m</text>
+      <text x="285" y="150" font-weight="700" font-size="12">${eb} m</text>
+      <text x="210" y="216" text-anchor="middle" font-weight="700" font-size="13" fill="#1d4ed8">AB = ${ab} m</text>
+    </svg>`;
+
+    stepsBox.innerHTML = `
+      <h3>Resolución paso a paso</h3>
+      <div class="step-item"><strong>Paso 1 (Semejanza AA):</strong> Como DC ∥ AB, los ángulos alternos internos son iguales ⇒ <strong>△DEC ~ △BEA</strong></div>
+      <div class="step-item"><strong>Paso 2 (Proporcionalidad):</strong> DC / AB = DE / EB → x / ${ab} = ${de} / ${eb}</div>
+      <div class="step-item"><strong>Paso 3 (Despeje):</strong> x = (${de} × ${ab}) / ${eb} = ${(de*ab).toFixed(2)} / ${eb} = <strong>${xTxt} m</strong></div>`;
+  }
+}
+calcular();
+</script>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ecuación de la Circunferencia — Geometría Analítica Interactiva</title>
+  <style>
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --primary: #1b365d;
+  --accent: #2563eb;
+  --accent-light: #eff6ff;
+  --success: #0f766e;
+  --success-bg: #f0fdfa;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --radius: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+  padding: 24px 16px 48px;
+}
+.container { max-width: 1080px; margin: 0 auto; }
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent-light); color: var(--accent);
+  font-size: 0.82rem; font-weight: 600; padding: 5px 12px;
+  border-radius: 999px; margin-bottom: 10px;
+}
+header { margin-bottom: 24px; }
+header h1 { font-size: 1.9rem; color: var(--primary); margin-bottom: 6px; }
+header p { color: var(--muted); font-size: 0.98rem; max-width: 780px; }
+.grid {
+  display: grid; grid-template-columns: 360px 1fr; gap: 22px; align-items: start;
+}
+@media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+.card h2 {
+  font-size: 1.08rem; color: var(--primary); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid var(--border); padding-bottom: 10px;
+}
+.pill-icon {
+  background: var(--accent-light); color: var(--accent);
+  font-weight: 700; font-size: 0.8rem; padding: 3px 8px; border-radius: 8px;
+}
+.field { margin-bottom: 13px; }
+.field label {
+  display: block; font-size: 0.85rem; font-weight: 600;
+  color: #334155; margin-bottom: 5px;
+}
+.field input, .field select {
+  width: 100%; padding: 9px 12px; border: 1.5px solid var(--border);
+  border-radius: 9px; font-size: 0.95rem; transition: border-color 0.2s;
+}
+.field input:focus, .field select:focus { outline: none; border-color: var(--accent); }
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.btn-row { display: flex; gap: 8px; margin-top: 14px; }
+.btn {
+  flex: 1; background: var(--accent); color: #fff; border: none;
+  padding: 10px 14px; border-radius: 9px; font-weight: 600;
+  font-size: 0.92rem; cursor: pointer; transition: background 0.2s;
+}
+.btn:hover { background: #1d4ed8; }
+.btn-sec {
+  background: #f1f5f9; color: #334155; flex: 0 0 auto;
+  padding: 10px 14px; border: 1px solid var(--border);
+  border-radius: 9px; font-weight: 600; cursor: pointer;
+}
+.btn-sec:hover { background: #e2e8f0; }
+.examples { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--border); }
+.examples-title { font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+.chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  background: #f8fafc; border: 1px solid var(--border); color: var(--primary);
+  padding: 5px 10px; border-radius: 999px; font-size: 0.8rem;
+  font-weight: 600; cursor: pointer; transition: all 0.15s;
+}
+.chip:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+.result-box {
+  background: var(--success-bg); border: 1px solid #99f6e4;
+  border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+}
+.result-label { font-size: 0.78rem; font-weight: 700; color: var(--success); text-transform: uppercase; letter-spacing: 0.04em; }
+.result-value { font-size: 1.32rem; font-weight: 800; color: #115e59; margin-top: 3px; font-family: 'Cambria Math', 'Segoe UI', serif; }
+.result-sub { font-size: 0.9rem; color: #134e4a; margin-top: 4px; }
+.svg-wrap {
+  background: #f8fafc; border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px; margin-bottom: 16px;
+  display: flex; justify-content: center; align-items: center;
+}
+.steps { background: #ffffff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.steps h3 { font-size: 0.92rem; color: var(--primary); margin-bottom: 10px; }
+.step-item {
+  font-size: 0.9rem; padding: 7px 10px; border-left: 3px solid var(--accent);
+  background: #f8fafc; border-radius: 0 6px 6px 0; margin-bottom: 8px;
+}
+.step-item strong { color: var(--primary); }
+.tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+.tab {
+  flex: 1; text-align: center; padding: 8px; border-radius: 8px;
+  background: #f1f5f9; color: #475569; font-size: 0.84rem;
+  font-weight: 600; cursor: pointer; border: 1px solid transparent;
+}
+.tab.active { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+.note { font-size: 0.8rem; color: var(--muted); margin-top: 10px; }
+footer { text-align: center; margin-top: 28px; font-size: 0.82rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="badge">○ Geometría Analítica Interactiva · Unidad III</div>
+    <h1>Ecuación de la Circunferencia</h1>
+    <p>Ingresa el centro <strong>C(h, k)</strong> y el radio <strong>r</strong> (o un punto <strong>P(x, y)</strong> del borde, como el diseño del patio circular). Genera la ecuación ordinaria, general y su gráfica en el plano cartesiano.</p>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <h2><span class="pill-icon">C,r</span> Datos geométricos</h2>
+      <div class="tabs">
+        <div class="tab active" id="tabR" onclick="setModo('r')">Centro y Radio (r / r²)</div>
+        <div class="tab" id="tabP" onclick="setModo('p')">Centro y Punto P(x,y)</div>
+      </div>
+
+      <div class="row-2">
+        <div class="field"><label>Coordenada h del centro</label><input type="number" id="ch" value="1" step="0.5"></div>
+        <div class="field"><label>Coordenada k del centro</label><input type="number" id="ck" value="2" step="0.5"></div>
+      </div>
+
+      <div id="modoR">
+        <div class="field">
+          <label>Tipo de dato del radio</label>
+          <select id="tipoR" onchange="calcular()">
+            <option value="r2" selected>Ingresar r² exacto (ej. r = √3 → r² = 3)</option>
+            <option value="r">Ingresar radio r directo</option>
+          </select>
+        </div>
+        <div class="field"><label id="lblR">Valor de r²</label><input type="number" id="vr" value="3" step="0.5" min="0.1"></div>
+      </div>
+
+      <div id="modoP" style="display:none;">
+        <div class="row-2">
+          <div class="field"><label>Punto P: coordenada x</label><input type="number" id="px" value="7" step="0.5"></div>
+          <div class="field"><label>Punto P: coordenada y</label><input type="number" id="py" value="7" step="0.5"></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn" onclick="calcular()">Calcular ecuación</button>
+        <button class="btn-sec" onclick="ejLibro()" title="Restablecer">↻</button>
+      </div>
+
+      <div class="examples">
+        <div class="examples-title">Ejemplos rápidos</div>
+        <div class="chip-group">
+          <button class="chip" onclick="ejLibro()">Ejercicio libro: C(1,2), r=√3</button>
+          <button class="chip" onclick="ejPatio()">Patio circular: C(4,3), P(7,7)</button>
+          <button class="chip" onclick="ejOrigen()">Origen: C(0,0), r=4</button>
+        </div>
+      </div>
+      <p class="note">El radio debe ser estrictamente positivo (r &gt; 0).</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="pill-icon">✓</span> Gráfica y ecuaciones</h2>
+      <div class="result-box" id="resBox"></div>
+      <div class="svg-wrap" id="svgWrap"></div>
+      <div class="steps" id="stepsBox"></div>
+    </div>
+  </div>
+  <footer>Nivelación en Matemáticas · USIL · Página interactiva de apoyo al informe</footer>
+</div>
+<script>
+let modo = 'r';
+function setModo(m){
+  modo = m;
+  document.getElementById('tabR').classList.toggle('active', m==='r');
+  document.getElementById('tabP').classList.toggle('active', m==='p');
+  document.getElementById('modoR').style.display = m==='r' ? 'block' : 'none';
+  document.getElementById('modoP').style.display = m==='p' ? 'block' : 'none';
+  calcular();
+}
+function ejLibro(){
+  setModo('r');
+  document.getElementById('ch').value=1;
+  document.getElementById('ck').value=2;
+  document.getElementById('tipoR').value='r2';
+  document.getElementById('vr').value=3;
+  calcular();
+}
+function ejPatio(){
+  setModo('p');
+  document.getElementById('ch').value=4;
+  document.getElementById('ck').value=3;
+  document.getElementById('px').value=7;
+  document.getElementById('py').value=7;
+  calcular();
+}
+function ejOrigen(){
+  setModo('r');
+  document.getElementById('ch').value=0;
+  document.getElementById('ck').value=0;
+  document.getElementById('tipoR').value='r';
+  document.getElementById('vr').value=4;
+  calcular();
+}
+function fmtBin(v, sym){
+  if (v === 0) return `${sym}²`;
+  return v > 0 ? `(${sym} − ${v})²` : `(${sym} + ${Math.abs(v)})²`;
+}
+function fmtTerm(coeff, txt){
+  if (coeff === 0) return '';
+  const sign = coeff > 0 ? ' + ' : ' − ';
+  const abs = Math.abs(coeff);
+  return `${sign}${abs === 1 && txt ? '' : abs}${txt}`;
+}
+function calcular(){
+  const h = parseFloat(document.getElementById('ch').value);
+  const k = parseFloat(document.getElementById('ck').value);
+  let r2, r, px=null, py=null;
+
+  if (modo === 'r') {
+    const tipo = document.getElementById('tipoR').value;
+    document.getElementById('lblR').innerText = tipo==='r2' ? 'Valor exacto de r²' : 'Valor del radio r';
+    const val = parseFloat(document.getElementById('vr').value);
+    if (isNaN(val) || val <= 0) return;
+    if (tipo === 'r2') { r2 = val; r = Math.sqrt(r2); }
+    else { r = val; r2 = r*r; }
+  } else {
+    px = parseFloat(document.getElementById('px').value);
+    py = parseFloat(document.getElementById('py').value);
+    r2 = (px - h)**2 + (py - k)**2;
+    r = Math.sqrt(r2);
+    if (r2 <= 0) return;
+  }
+
+  const rExact = Number.isInteger(r) ? `${r}` : `√${r2} ≈ ${r.toFixed(3)}`;
+  const eqOrd = `${fmtBin(h,'x')} + ${fmtBin(k,'y')} = ${Number(r2.toFixed(4))}`;
+  const D = -2*h, E = -2*k, F = h*h + k*k - r2;
+  const eqGen = `x² + y²${fmtTerm(D,'x')}${fmtTerm(E,'y')}${fmtTerm(Number(F.toFixed(4)),'')} = 0`;
+
+  document.getElementById('resBox').innerHTML = `
+    <div class="result-label">Ecuación ordinaria y general</div>
+    <div class="result-value">${eqOrd}</div>
+    <div class="result-sub"><strong>Forma general:</strong> ${eqGen} &nbsp;|&nbsp; <strong>Centro:</strong> C(${h}, ${k}) &nbsp;|&nbsp; <strong>Radio:</strong> r = ${rExact}</div>
+  `;
+
+  const size = 320, pad = 28;
+  const maxCoord = Math.max(Math.abs(h)+r, Math.abs(k)+r, 6) + 1.5;
+  const scale = (size/2 - pad) / maxCoord;
+  const ox = size/2, oy = size/2;
+  const tx = x => ox + x*scale;
+  const ty = y => oy - y*scale;
+
+  let grid = '';
+  const step = maxCoord > 12 ? 2 : 1;
+  for (let i = -Math.floor(maxCoord); i <= Math.floor(maxCoord); i += step) {
+    grid += `<line x1="${tx(i)}" y1="10" x2="${tx(i)}" y2="${size-10}" stroke="#e2e8f0" stroke-width="1"/>`;
+    grid += `<line x1="10" y1="${ty(i)}" x2="${size-10}" y2="${ty(i)}" stroke="#e2e8f0" stroke-width="1"/>`;
+  }
+  const rx = tx(h + r), ry = ty(k);
+  const pDot = modo==='p' ? `
+    <line x1="${tx(h)}" y1="${ty(k)}" x2="${tx(px)}" y2="${ty(py)}" stroke="#0f766e" stroke-width="2" stroke-dasharray="5,4"/>
+    <circle cx="${tx(px)}" cy="${ty(py)}" r="4.5" fill="#0f766e"/>
+    <text x="${tx(px)+7}" y="${ty(py)-6}" font-size="11" font-weight="700" fill="#0f766e">P(${px},${py})</text>
+  ` : `
+    <line x1="${tx(h)}" y1="${ty(k)}" x2="${rx}" y2="${ry}" stroke="#d97706" stroke-width="2" stroke-dasharray="5,4"/>
+    <text x="${(tx(h)+rx)/2}" y="${ry-6}" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">r = ${rExact}</text>
+  `;
+
+  document.getElementById('svgWrap').innerHTML = `
+  <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    ${grid}
+    <line x1="10" y1="${oy}" x2="${size-10}" y2="${oy}" stroke="#64748b" stroke-width="1.5"/>
+    <line x1="${ox}" y1="10" x2="${ox}" y2="${size-10}" stroke="#64748b" stroke-width="1.5"/>
+    <circle cx="${tx(h)}" cy="${ty(k)}" r="${r*scale}" fill="rgba(37,99,235,0.12)" stroke="#2563eb" stroke-width="2.5"/>
+    ${pDot}
+    <circle cx="${tx(h)}" cy="${ty(k)}" r="4.5" fill="#dc2626"/>
+    <text x="${tx(h)+7}" y="${ty(k)+14}" font-size="11" font-weight="700" fill="#b91c1c">C(${h},${k})</text>
+  </svg>`;
+
+  let steps = `<h3>Resolución paso a paso</h3>
+    <div class="step-item"><strong>Paso 1 (Fórmula ordinaria):</strong> (x − h)² + (y − k)² = r²</div>`;
+  if (modo === 'p') {
+    steps += `<div class="step-item"><strong>Paso 2 (Hallar r² con P(${px}, ${py})):</strong> r² = (${px} − ${h})² + (${py} − ${k})² = ${(px-h)**2} + ${(py-k)**2} = <strong>${r2}</strong> → r = <strong>${rExact}</strong></div>`;
+  } else {
+    steps += `<div class="step-item"><strong>Paso 2 (Sustituir centro y radio):</strong> h = ${h}, k = ${k}, r² = ${r2}</div>`;
+  }
+  steps += `<div class="step-item"><strong>Paso 3 (Ecuación ordinaria):</strong> <strong>${eqOrd}</strong></div>
+    <div class="step-item"><strong>Paso 4 (Desarrollo a forma general):</strong> <strong>${eqGen}</strong></div>`;
+  document.getElementById('stepsBox').innerHTML = steps;
+}
+ejLibro();
+</script>
+</body>
+</html>
